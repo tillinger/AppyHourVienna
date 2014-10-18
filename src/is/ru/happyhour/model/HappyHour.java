@@ -8,6 +8,7 @@ public class HappyHour implements Serializable {
     private long id;
 
     private HappyHourType type;
+    private String name;
     private Address address;
 
     private long startDate; //date in millis when this happy hours starts and ends
@@ -19,11 +20,17 @@ public class HappyHour implements Serializable {
 
     private double price;
 
-    private String description;
+    private String descriptionHappy;
+    private String descriptionBar;
 
     public HappyHour() {}
 
-
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public long getId() {
         return id;
@@ -88,10 +95,17 @@ public class HappyHour implements Serializable {
         this.price = price;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescriptionHappy() {
+        return descriptionHappy;
     }
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptionHappy(String descriptionHappy) {
+        this.descriptionHappy = descriptionHappy;
+    }
+
+    public String getDescriptionBar() {
+        return descriptionBar;
+    }
+    public void setDescriptionBar(String descriptionBar) {
+        this.descriptionBar = descriptionBar;
     }
 }

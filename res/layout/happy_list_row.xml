@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dip"
+                android:background="#CCCCCC">
+
+    <!--  ListRow Left side Thumbnail image -->
+    <LinearLayout android:id="@+id/image_layout"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:padding="2dip"
+                  android:layout_alignParentLeft="true"
+                  android:layout_marginRight="5dip">
+
+        <ImageView
+                android:id="@+id/list_image"
+                android:layout_width="80dip"
+                android:layout_height="60dip"
+                android:layout_marginTop="3dip"
+                android:contentDescription="@string/contentDescription_listImage"
+                android:src="@drawable/beer"/>
+    </LinearLayout>
+
+    <!-- Title of HappyHour -->
+    <TextView
+            android:id="@+id/happy_row_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/image_layout"
+            android:layout_toRightOf="@+id/image_layout"
+            android:singleLine="true"
+            android:textSize="19sp"
+            android:text="Irgendeine Pude"
+            android:textColor="#4AC948"
+            android:textStyle="bold"/>
+
+    <!-- Happy hour address -->
+    <TextView
+            android:id="@+id/happy_row_address"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/happy_row_title"
+            android:singleLine="true"
+            android:textSize="13sp"
+            android:layout_marginTop="3dip"
+            android:text="Kettenbrückengasse 23"
+            android:textColor="#000000"
+            android:layout_toRightOf="@+id/image_layout" />
+
+    <!-- Happy Time -->
+    <ImageView
+            android:id="@+id/happy_row_price_image"
+            android:layout_width="20dip"
+            android:layout_height="20dip"
+            android:layout_below="@id/happy_row_address"
+            android:layout_toRightOf="@+id/image_layout"
+            android:layout_marginLeft="3dip"
+            android:layout_marginBottom="5dip"
+            android:src="@drawable/clock"/>
+
+    <TextView
+            android:id="@+id/happy_row_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/happy_row_address"
+            android:layout_alignBottom="@+id/happy_row_price"
+            android:layout_toRightOf="@+id/happy_row_price_image"
+            android:textSize="15sp"
+            android:layout_marginTop="1sp"
+            android:singleLine="true"
+            android:textColor="#777777"
+            android:text="Today 00:00 - 33:00"
+            android:layout_marginLeft="5dip" />
+
+
+
+    <!-- Happy price -->
+    <TextView
+            android:id="@+id/happy_row_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/happy_row_address"
+            android:layout_alignBottom="@+id/happy_row_price"
+            android:textSize="17sp"
+            android:layout_marginTop="1sp"
+            android:layout_marginRight="5dip"
+            android:singleLine="true"
+            android:textColor="#4AC948"
+            android:text="100 €"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
