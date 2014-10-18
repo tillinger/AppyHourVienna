@@ -2,4 +2,9 @@
 <resources>
     <string name="app_name">Appy Hour Vienna</string>
     <string name="contentDescription_listImage">Image of the Bar, Restaurant, ...</string>
+
+
+    <string name="refresh">Refresh list</string>
+    <string name="orderPrice">Order by Price</string>
+    <string name="orderLocation">Order by Location</string>
 </resources>

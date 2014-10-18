@@ -1,11 +1,17 @@
 package is.ru.happyhour;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 import is.ru.happyhour.adapter.HappyListAdapter;
 import is.ru.happyhour.model.Address;
 import is.ru.happyhour.model.DayOfWeek;
@@ -13,14 +19,15 @@ import is.ru.happyhour.model.HappyHour;
 import is.ru.happyhour.model.HappyHourType;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 
 public class HappyListFragment extends ListFragment {
 
-    private OnHappyHourClickListener listener;
-    private HappyListAdapter adapter;
+    private OnHappyHourClickListener clickListener;
+    private HappyListAdapter listAdapter;
+    private SpinnerAdapter spinnerAdapter;
+    private ActionBar.OnNavigationListener navigationListener;
 
     public interface OnHappyHourClickListener {
         public void onHappyHourClicked(int position);
@@ -29,6 +36,35 @@ public class HappyListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.spinnerAdapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.action_list, android.R.layout.simple_spinner_dropdown_item);
+
+        this.navigationListener = new ActionBar.OnNavigationListener() {
+            // Get the same strings provided for the drop-down's ArrayAdapter
+            String[] strings = getResources().getStringArray(R.array.action_list);
+
+            @Override
+            public boolean onNavigationItemSelected(int position, long itemId) {
+                if(strings[position].equals(strings[0])) { //now
+                    //TODO load everything from database
+                    System.out.println("NOW pressed");
+                } else if(strings[position].equals(strings[1])) { //all
+                    //TODO load only the current happy hours from the database
+                    System.out.println("ALL pressed");
+                }
+                return true;
+            }
+        };
+
+        //set the actionbar to the navigation list and the callback method
+        getActivity().getActionBar().setDisplayShowTitleEnabled(false);
+        getActivity().getActionBar().setNavigationMode(getActivity().getActionBar().NAVIGATION_MODE_LIST);
+        getActivity().getActionBar().setListNavigationCallbacks(spinnerAdapter, this.navigationListener);
+
+        //tell the framework that this fragment has a menu
+        this.setHasOptionsMenu(true);
+
 
         // create the data for the happy hours (usually a xml-request would be here)
         //TODO
@@ -51,8 +87,8 @@ public class HappyListFragment extends ListFragment {
 
             happies.add(happy);
         }
-        this.adapter = new HappyListAdapter(getActivity(), happies);
-        setListAdapter(adapter);
+        this.listAdapter = new HappyListAdapter(getActivity(), happies);
+        setListAdapter(listAdapter);
     }
 
     @Override
@@ -60,7 +96,7 @@ public class HappyListFragment extends ListFragment {
         super.onAttach(activity);
 
         try {
-            listener = (OnHappyHourClickListener) activity;
+            clickListener = (OnHappyHourClickListener) activity;
         }
         catch ( ClassCastException e ) {
             throw new ClassCastException(activity.toString() + " must implement OnHappyHourSelectedListener!" + e);
@@ -69,12 +105,36 @@ public class HappyListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        listener.onHappyHourClicked(position);
+        clickListener.onHappyHourClicked(position);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         getListView().setChoiceMode( ListView.CHOICE_MODE_SINGLE );
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                System.out.println("LIST REFRESH pressed");
+                break;
+            case R.id.menu_order_by_price:
+                System.out.println("ORDER BY PRICE pressed");
+                break;
+            case R.id.menu_order_by_location:
+                System.out.println("ORDER BY LOCATION pressed");
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 }
