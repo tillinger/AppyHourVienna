@@ -1,7 +1,6 @@
 package is.ru.happyhour.async;
 
 import is.ru.happyhour.HappyListFragment;
-
 import android.os.AsyncTask;
 
 public class LoadHappiesHttp extends AsyncTask<Void, Void, Boolean> {
@@ -32,6 +31,8 @@ public class LoadHappiesHttp extends AsyncTask<Void, Void, Boolean> {
             e.printStackTrace();
             return false;
         }
+
+        //here save the happy hours to the databse
 
         return true;
     }

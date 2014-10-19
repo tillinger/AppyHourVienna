@@ -50,4 +50,12 @@ public class HappyListAdapter extends ArrayAdapter<HappyHour> {
 
         return rowView;
     }
+
+    public void addHappyHours(ArrayList<HappyHour> newHappies) {
+        this.happyhours.addAll(newHappies);
+    }
+
+    public void removeAll() {
+        this.happyhours.clear();
+    }
 }
