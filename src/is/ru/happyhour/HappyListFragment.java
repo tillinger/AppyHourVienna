@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 import is.ru.happyhour.adapter.HappyListAdapter;
+import is.ru.happyhour.async.LoadHappiesHttp;
 import is.ru.happyhour.model.Address;
 import is.ru.happyhour.model.DayOfWeek;
 import is.ru.happyhour.model.HappyHour;
@@ -28,6 +30,8 @@ public class HappyListFragment extends ListFragment {
     private HappyListAdapter listAdapter;
     private SpinnerAdapter spinnerAdapter;
     private ActionBar.OnNavigationListener navigationListener;
+
+    private LoadHappiesHttp downloadTask;
 
     public interface OnHappyHourClickListener {
         public void onHappyHourClicked(int position);
@@ -115,6 +119,15 @@ public class HappyListFragment extends ListFragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //running downloads get cancelled here!
+        if(downloadTask != null) {
+            downloadTask.cancel(true);
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -124,7 +137,9 @@ public class HappyListFragment extends ListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                System.out.println("LIST REFRESH pressed");
+                this.setListShown(false);
+                downloadTask = new LoadHappiesHttp(this);
+                downloadTask.execute();
                 break;
             case R.id.menu_order_by_price:
                 System.out.println("ORDER BY PRICE pressed");
@@ -136,5 +151,13 @@ public class HappyListFragment extends ListFragment {
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    public void downloadFinished(boolean success) {
+        if(success) {
+            this.setListShown(true);
+        } else {
+            Toast.makeText(getActivity(), "Error downloading Happy Hours!", Toast.LENGTH_LONG).show();
+        }
     }
 }
