@@ -15,7 +15,7 @@
                   android:layout_marginRight="5dip">
 
         <ImageView
-                android:id="@+id/list_image"
+                android:id="@+id/happy_row_image"
                 android:layout_width="80dip"
                 android:layout_height="60dip"
                 android:layout_marginTop="3dip"

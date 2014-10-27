@@ -2,15 +2,18 @@ package is.ru.happyhour.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import is.ru.happyhour.R;
 import is.ru.happyhour.model.HappyHour;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class HappyListAdapter extends ArrayAdapter<HappyHour> {
@@ -32,6 +35,7 @@ public class HappyListAdapter extends ArrayAdapter<HappyHour> {
         View rowView = inflater.inflate(R.layout.happy_list_row, parent, false);
 
         //get Views of this layout
+        ImageView image = (ImageView) rowView.findViewById(R.id.happy_row_image);
         TextView title = (TextView) rowView.findViewById(R.id.happy_row_title);
         TextView address = (TextView) rowView.findViewById(R.id.happy_row_address);
         TextView time = (TextView) rowView.findViewById(R.id.happy_row_time);

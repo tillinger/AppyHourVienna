@@ -4,7 +4,10 @@
     <string name="contentDescription_listImage">Image of the Bar, Restaurant, ...</string>
 
 
-    <string name="refresh">Refresh list</string>
-    <string name="orderPrice">Order by Price</string>
-    <string name="orderLocation">Order by Location</string>
+    <string name="menu_refresh">Refresh list</string>
+    <string name="menu_orderPrice">Order by Price</string>
+    <string name="menu_orderLocation">Order by Location</string>
+
+    <string name="menu_share">Share this Happy Hour</string>
+    <string name="menu_map">Show the Location on Google Maps</string>
 </resources>

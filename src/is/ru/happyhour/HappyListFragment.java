@@ -38,7 +38,7 @@ public class HappyListFragment extends ListFragment {
     private int nowOrAll;
 
     public interface OnHappyHourClickListener {
-        public void onHappyHourClicked(int position);
+        public void onHappyHourClicked(HappyHour clickedHappyHour);
     }
 
     @Override
@@ -103,13 +103,13 @@ public class HappyListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        clickListener.onHappyHourClicked(position);
+        clickListener.onHappyHourClicked(this.listAdapter.getItem(position));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        getListView().setChoiceMode( ListView.CHOICE_MODE_SINGLE );
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
     @Override

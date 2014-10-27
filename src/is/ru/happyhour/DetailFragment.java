@@ -1,27 +1,34 @@
 package is.ru.happyhour;
 
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.ImageView;
 import android.widget.TextView;
+import is.ru.happyhour.async.LoadHappiesHttp;
+import is.ru.happyhour.model.HappyHour;
+
+import java.io.IOException;
 
 
 public class DetailFragment extends Fragment {
 
-    final static String ARG_POSITION = "position";
-    int mCurrentPosition = -1;
+    private final static String HAPPYHOUR_SAVE = "HAPPYHOUR_SAVE";
+    HappyHour happyHour;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        System.out.println("oncreateview detail");
+
         // If activity recreated (such as from screen rotate), restore
         // the previous article selection set by onSaveInstanceState().
         // This is primarily necessary when in the two-pane layout.
+
         if (savedInstanceState != null) {
-            mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
+            this.happyHour = (HappyHour) savedInstanceState.getSerializable(HAPPYHOUR_SAVE);
         }
 
         // Inflate the layout for this fragment
@@ -29,34 +36,68 @@ public class DetailFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //tell the framework that this fragment has a menu
+        this.setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 
-        // During startup, check if there are arguments passed to the fragment.
-        // onStart is a good place to do this because the layout has already been
-        // applied to the fragment at this point so we can safely call the method
-        // below that sets the article text.
+        System.out.println("onstart detail");
+
         Bundle args = getArguments();
         if (args != null) {
-            // Set article based on argument passed in
-            updateArticleView(args.getInt(ARG_POSITION));
-        } else if (mCurrentPosition != -1) {
-            // Set article based on saved instance state defined during onCreateView
-            updateArticleView(mCurrentPosition);
+            this.updateHappyHour((HappyHour) args.getSerializable(MainActivity.HAPPYHOUR_EXTRA));
+        } else { //HappyHour already read in onCreateView because of savedInstanceState
+            this.updateHappyHour(this.happyHour);
         }
     }
 
-    public void updateArticleView(int position) {
-        TextView article = (TextView) getActivity().findViewById(R.id.detail_textview);
-        article.setText("just a text to test: " + position);
-        mCurrentPosition = position;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.detail, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_share:
+                //TODO share this happyhour
+                System.out.println("share pressed!");
+                break;
+            case R.id.menu_location:
+                System.out.println("map pressed!");
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    public void updateHappyHour(HappyHour newHappyHour) {
+        this.happyHour = newHappyHour;
+
+
+
+        ImageView image = (ImageView) getActivity().findViewById(R.id.detail_image);
+        try {
+            image.setImageDrawable(Drawable.createFromStream(getActivity().getAssets().open("2.jpg"), null));
+            image.setScaleType(ImageView.ScaleType.CENTER_CROP );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        // Save the current article selection in case we need to recreate the fragment
-        outState.putInt(ARG_POSITION, mCurrentPosition);
+        // Save the current happyhour selection in case we need to recreate the fragment
+        outState.putSerializable(HAPPYHOUR_SAVE, this.happyHour);
     }
 }
