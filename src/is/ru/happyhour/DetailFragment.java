@@ -3,6 +3,7 @@ package is.ru.happyhour;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.*;
@@ -62,12 +63,17 @@ public class DetailFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_share:
-                //TODO share this happyhour
-                System.out.println("share pressed!");
+                String message = "Hey guy!\nI'm going to the Happy-Hour-Event at "
+                        + happyHour.getName() + "! The address is "
+                        + happyHour.getAddress().getAddress() + ".";
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Happy Hour Event");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+                startActivity(Intent.createChooser(sharingIntent, "Share with ..."));
                 break;
-            case R.id.menu_location:
-                System.out.println("location pressed!");
 
+            case R.id.menu_location:
                 MyMapFragment mapFragment = new MyMapFragment();
                 Bundle args = new Bundle();
                 args.putSerializable(MainActivity.HAPPYHOUR_EXTRA, this.happyHour);
