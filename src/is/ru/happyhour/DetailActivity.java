@@ -22,7 +22,7 @@ public class DetailActivity extends Activity {
         //}
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99666666")));
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99333333")));
 
         this.setContentView(R.layout.detail_activity);
 

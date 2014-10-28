@@ -47,4 +47,8 @@ public class Address implements Serializable {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    public String getAddressWithPostCode() {
+        return this.postcode + ", " + this.address;
+    }
 }

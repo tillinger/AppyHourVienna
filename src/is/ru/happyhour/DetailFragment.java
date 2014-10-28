@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.ImageView;
+import android.widget.TextView;
 import is.ru.happyhour.model.HappyHour;
 
 import java.io.IOException;
@@ -16,29 +17,19 @@ import java.io.IOException;
 public class DetailFragment extends Fragment {
 
     private final static String HAPPYHOUR_SAVE = "HAPPYHOUR_SAVE";
-    HappyHour happyHour;
+    private HappyHour happyHour;
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // If activity recreated (such as from screen rotate), restore
-        // the previous article selection set by onSaveInstanceState().
-        // This is primarily necessary when in the two-pane layout.
 
         if (savedInstanceState != null) {
             this.happyHour = (HappyHour) savedInstanceState.getSerializable(HAPPYHOUR_SAVE);
         }
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.detail_fragment, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        //tell the framework that this fragment has a menu
-        this.setHasOptionsMenu(true);
+        this.view = inflater.inflate(R.layout.detail_fragment, container, false);
+        return view;
     }
 
     @Override
@@ -48,9 +39,17 @@ public class DetailFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             this.updateHappyHour((HappyHour) args.getSerializable(MainActivity.HAPPYHOUR_EXTRA));
-        } else { //HappyHour already read in onCreateView because of savedInstanceState
+        } else { //HappyHour already read because of savedInstanceState
             this.updateHappyHour(this.happyHour);
         }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //tell the framework that this fragment has a menu
+        this.setHasOptionsMenu(true);
     }
 
     @Override
@@ -106,12 +105,23 @@ public class DetailFragment extends Fragment {
 
         System.out.println("newhappyhour is: " + newHappyHour);
 
+        //write the happyhour fields
         ImageView image = (ImageView) getActivity().findViewById(R.id.detail_image);
-        try {
+        TextView title = (TextView) view.findViewById(R.id.detail_title);
+        TextView address = (TextView) view.findViewById(R.id.detail_address);
+
+        try { //TODO download lazily from server
             image.setImageDrawable(Drawable.createFromStream(getActivity().getAssets().open("2.jpg"), null));
             image.setScaleType(ImageView.ScaleType.CENTER_CROP );
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if(happyHour.getName() != null) {
+            title.setText(happyHour.getName());
+        }
+        if(happyHour.getAddress().getAddress() != null) {
+            address.setText(happyHour.getAddress().getAddressWithPostCode());
         }
     }
 
