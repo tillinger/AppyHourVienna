@@ -1,12 +1,12 @@
 package is.ru.happyhour;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.ImageView;
-import android.widget.TextView;
-import is.ru.happyhour.async.LoadHappiesHttp;
 import is.ru.happyhour.model.HappyHour;
 
 import java.io.IOException;
@@ -20,9 +20,6 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        System.out.println("oncreateview detail");
-
         // If activity recreated (such as from screen rotate), restore
         // the previous article selection set by onSaveInstanceState().
         // This is primarily necessary when in the two-pane layout.
@@ -32,7 +29,7 @@ public class DetailFragment extends Fragment {
         }
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.detail, container, false);
+        return inflater.inflate(R.layout.detail_fragment, container, false);
     }
 
     @Override
@@ -46,8 +43,6 @@ public class DetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        System.out.println("onstart detail");
 
         Bundle args = getArguments();
         if (args != null) {
@@ -71,8 +66,31 @@ public class DetailFragment extends Fragment {
                 System.out.println("share pressed!");
                 break;
             case R.id.menu_location:
-                System.out.println("map pressed!");
+                System.out.println("location pressed!");
+
+                MyMapFragment mapFragment = new MyMapFragment();
+                Bundle args = new Bundle();
+                args.putSerializable(MainActivity.HAPPYHOUR_EXTRA, this.happyHour);
+                mapFragment.setArguments(args);
+
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                //decide which fragment to switch (depending on screen size)
+                DetailFragment detailFragmentLarge = (DetailFragment)
+                        getFragmentManager().findFragmentById(R.id.detail_fragment_large);
+                if(detailFragmentLarge != null) {
+                    System.out.println("detailFragmentLarge != null!");
+                    fragmentTransaction.replace(R.id.detail_fragment_large, mapFragment);
+                } else {
+                    System.out.println("detailFragmentLarge == null!");
+                    fragmentTransaction.replace(R.id.detail_fragment_container, mapFragment);
+                }
+
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -82,7 +100,7 @@ public class DetailFragment extends Fragment {
     public void updateHappyHour(HappyHour newHappyHour) {
         this.happyHour = newHappyHour;
 
-
+        System.out.println("newhappyhour is: " + newHappyHour);
 
         ImageView image = (ImageView) getActivity().findViewById(R.id.detail_image);
         try {

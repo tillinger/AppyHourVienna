@@ -47,7 +47,7 @@ public class LoadHappiesDB extends AsyncTask<Integer, Void, Boolean> {
                 happy.setName("Loco-Bar " + i);
                 happy.setDaysOfWeek(EnumSet.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY));
                 happy.setDescriptionHappy("Beer: 3,5€\nCocktails: 1,5€");
-                happy.setDescriptionBar("This Bar is a very nice location for all kind of people!\nMeet with your friends!\nSee you");
+                happy.setDescriptionBar("This Bar is a very nice location for all kind of people!\nMeet with your friends!\nSee you!");
                 happy.setStartDate(new Date().getTime());
                 happy.setEndDate(new Date().getTime() + 60 * 60 * 24 * 1000 * 7); //one week
                 happy.setPrice(0.5*i);
@@ -55,7 +55,9 @@ public class LoadHappiesDB extends AsyncTask<Integer, Void, Boolean> {
                 happy.setEndTime(60 * 60 * 22);
                 happy.setType(HappyHourType.BEER);
 
-                Address address = new Address("Regengasse " + i, 1010);
+                Address address = new Address("Währinger Gürtel Stadtbahnbogen 172-174 ", 1090);
+                address.setLatitude(48.231262);
+                address.setLongitude(16.351871);
                 happy.setAddress(address);
 
                 this.dbHappies.add(happy);

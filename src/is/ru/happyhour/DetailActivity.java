@@ -15,11 +15,22 @@ public class DetailActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         //set the Fragment as the content of android.R.id.content
-        if(savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(android.R.id.content, new DetailFragment()).commit();
-        }
+        //if(savedInstanceState == null) {
+            //getFragmentManager().beginTransaction().add(android.R.id.content, new DetailFragment()).commit();
+        //}
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99666666")));
+
+        this.setContentView(R.layout.detail_activity);
+
+        //only add fragment when first created!
+        if(savedInstanceState == null) {
+            DetailFragment detailFragment = new DetailFragment();
+            detailFragment.setArguments(getIntent().getExtras());
+            getFragmentManager().beginTransaction()
+                    .add(R.id.detail_fragment_container, detailFragment)
+                    .commit();
+        }
     }
 }
