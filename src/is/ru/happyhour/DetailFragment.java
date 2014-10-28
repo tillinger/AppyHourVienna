@@ -86,10 +86,8 @@ public class DetailFragment extends Fragment {
                 DetailFragment detailFragmentLarge = (DetailFragment)
                         getFragmentManager().findFragmentById(R.id.detail_fragment_large);
                 if(detailFragmentLarge != null) {
-                    System.out.println("detailFragmentLarge != null!");
                     fragmentTransaction.replace(R.id.detail_fragment_large, mapFragment);
                 } else {
-                    System.out.println("detailFragmentLarge == null!");
                     fragmentTransaction.replace(R.id.detail_fragment_container, mapFragment);
                 }
 

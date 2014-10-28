@@ -3,7 +3,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="5dip"
+                android:paddingBottom="10dip"
+                android:paddingTop="5dip"
+                android:paddingLeft="5dip"
+                android:paddingRight="5dip"
                 android:background="#CCCCCC">
 
     <!--  ListRow Left side Thumbnail image -->
@@ -43,10 +46,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/happy_row_title"
             android:singleLine="true"
-            android:textSize="13sp"
+            android:textSize="14sp"
             android:layout_marginTop="3dip"
             android:text="Kettenbrückengasse 23"
-            android:textColor="#000000"
+            android:textColor="#333333"
+            android:textStyle="bold"
             android:layout_toRightOf="@+id/image_layout" />
 
     <!-- Happy Time -->
@@ -54,25 +58,19 @@
             android:id="@+id/happy_row_price_image"
             android:layout_width="20dip"
             android:layout_height="20dip"
-            android:layout_below="@id/happy_row_address"
-            android:layout_toRightOf="@+id/image_layout"
-            android:layout_marginLeft="3dip"
-            android:layout_marginBottom="5dip"
-            android:src="@drawable/clock"/>
+            android:src="@drawable/clock"
+            android:layout_alignBottom="@+id/happy_row_price" android:layout_toRightOf="@+id/image_layout"/>
 
     <TextView
             android:id="@+id/happy_row_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/happy_row_address"
-            android:layout_alignBottom="@+id/happy_row_price"
-            android:layout_toRightOf="@+id/happy_row_price_image"
-            android:textSize="15sp"
-            android:layout_marginTop="1sp"
+            android:textSize="13sp"
             android:singleLine="true"
             android:textColor="#777777"
             android:text="Today 00:00 - 33:00"
-            android:layout_marginLeft="5dip" />
+            android:layout_alignBottom="@+id/happy_row_price_image"
+            android:layout_toRightOf="@+id/happy_row_price_image"/>
 
 
 

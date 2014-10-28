@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import is.ru.happyhour.model.HappyHour;
 
@@ -17,6 +19,8 @@ public class MainActivity extends Activity implements HappyListFragment.OnHappyH
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99666666")));
 
         //only add fragment if first created and the screen size is large
         if(savedInstanceState == null && displaySizeLargeOrXLarge()) {
