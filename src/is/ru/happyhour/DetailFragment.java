@@ -37,10 +37,12 @@ public class DetailFragment extends Fragment {
         super.onStart();
 
         Bundle args = getArguments();
-        if (args != null) {
-            this.updateHappyHour((HappyHour) args.getSerializable(MainActivity.HAPPYHOUR_EXTRA));
-        } else { //HappyHour already read because of savedInstanceState
+        if (this.happyHour != null) { //got from savedinstance state
             this.updateHappyHour(this.happyHour);
+        } else if (args != null) {
+            this.updateHappyHour((HappyHour) args.getSerializable(MainActivity.HAPPYHOUR_EXTRA));
+        } else {
+            System.err.println("ERROR: no args and happyhour == null");
         }
     }
 
@@ -106,9 +108,13 @@ public class DetailFragment extends Fragment {
         System.out.println("newhappyhour is: " + newHappyHour);
 
         //write the happyhour fields
-        ImageView image = (ImageView) getActivity().findViewById(R.id.detail_image);
+        ImageView image = (ImageView) view.findViewById(R.id.detail_image);
         TextView title = (TextView) view.findViewById(R.id.detail_title);
         TextView address = (TextView) view.findViewById(R.id.detail_address);
+        TextView days = (TextView) view.findViewById(R.id.detail_dayinweek_textview);
+        TextView beerTime = (TextView) view.findViewById(R.id.detail_beer_time);
+        TextView beerPrice = (TextView) view.findViewById(R.id.detail_beer_price);
+        TextView description = (TextView) view.findViewById(R.id.detail_description_text);
 
         try { //TODO download lazily from server
             image.setImageDrawable(Drawable.createFromStream(getActivity().getAssets().open("2.jpg"), null));
@@ -123,6 +129,26 @@ public class DetailFragment extends Fragment {
         if(happyHour.getAddress().getAddress() != null) {
             address.setText(happyHour.getAddress().getAddressWithPostCode());
         }
+        if(happyHour.getDaysOfWeek() != null) {
+            //Todo
+            //if every day: write every day and try to abbreviate if with "monday to friday" for example!
+            //TODO if today is happy hour first say: TODAY
+            days.setText(happyHour.getDaysAsString());
+        }
+
+        beerTime.setText(happyHour.getTimeString());
+        beerPrice.setText(happyHour.getPrice() + "0 €");
+
+
+
+        if(happyHour.getDescriptionBar() != null) {
+            description.setText(happyHour.getDescriptionBar());
+        }
+
+        //tell the scrollview in the layout that the content has changed
+        //TODO scrollview problems
+        view.invalidate();
+        view.requestLayout();
     }
 
     @Override

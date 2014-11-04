@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="horizontal"
+              android:background="#333333"
+              android:gravity="center">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:paddingBottom="18dip">
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/empty_title"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="APPY HOUR VIENNA"
+                  android:layout_marginLeft="14dip"
+                  android:layout_marginTop="18dip"
+                  android:textStyle="bold"
+                  android:textSize="35sp" />
+
+        <ImageView
+                android:id="@+id/detail_beer_image"
+                android:layout_width="100dip"
+                android:layout_height="75dip"
+                android:layout_marginTop="15dip"
+                android:contentDescription="@string/contentDescription_listImage"
+                android:src="@drawable/beer_lightgrey"
+                android:layout_alignLeft="@+id/detail_happyhour_text"
+                android:layout_below="@+id/empty_title"/>
+
+        <!-- description for beer -->
+        <TextView
+                android:id="@+id/detail_beer_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_marginTop="5dip"
+                android:textSize="18sp"
+                android:lines="2"
+                android:text="SELECT A HAPPY HOUR FROM THE LIST"
+                android:textStyle="bold"
+                android:layout_alignTop="@+id/detail_beer_image"
+                android:layout_toRightOf="@+id/detail_beer_image"/>
+
+    </RelativeLayout>
+</LinearLayout>

@@ -31,7 +31,7 @@ public class MyMapFragment extends com.google.android.gms.maps.MapFragment {
         super.onStart();
 
         Bundle args = getArguments();
-        if (args != null) {
+        if (args != null) { //TODO change extra name
             this.happyHour = ((HappyHour) args.getSerializable(MainActivity.HAPPYHOUR_EXTRA));
         }
 

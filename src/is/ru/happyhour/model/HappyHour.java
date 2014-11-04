@@ -53,13 +53,13 @@ public class HappyHour implements Serializable {
         this.address = address;
     }
 
+    //dates
     public long getStartDate() {
         return startDate;
     }
     public void setStartDate(long startDate) {
         this.startDate = startDate;
     }
-
     public long getEndDate() {
         return endDate;
     }
@@ -67,25 +67,41 @@ public class HappyHour implements Serializable {
         this.endDate = endDate;
     }
 
+    //times
     public long getStartTime() {
         return startTime;
     }
     public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
-
     public long getEndTime() {
         return endTime;
     }
     public void setEndTime(long endTime) {
         this.endTime = endTime;
     }
+    public String getTimeString() {
+        return getNumberTwoDigit(this.startTime/3600) + ":" + getNumberTwoDigit((this.startTime%3600)/60) + " - " +
+               getNumberTwoDigit(this.endTime/3600) + ":" + getNumberTwoDigit((this.endTime%3600)/60);
+    }
+    private String getNumberTwoDigit(long number) {
+        return (number >= 10) ? "" + number : "0" + number;
+    }
 
+    //days
     public EnumSet<DayOfWeek> getDaysOfWeek() {
         return daysOfWeek;
     }
     public void setDaysOfWeek(EnumSet<DayOfWeek> daysOfWeek) {
         this.daysOfWeek = daysOfWeek;
+    }
+    public String getDaysAsString() {
+        String result = "";
+        for (DayOfWeek dayOfWeek : daysOfWeek) {
+            result += dayOfWeek.name();
+            result += " ";
+        }
+        return result;
     }
 
     public double getPrice() {

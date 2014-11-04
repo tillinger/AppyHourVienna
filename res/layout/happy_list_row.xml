@@ -58,7 +58,7 @@
             android:id="@+id/happy_row_price_image"
             android:layout_width="20dip"
             android:layout_height="20dip"
-            android:src="@drawable/clock"
+            android:src="@drawable/ic_action_alarms"
             android:layout_alignBottom="@+id/happy_row_price" android:layout_toRightOf="@+id/image_layout"/>
 
     <TextView
@@ -68,7 +68,7 @@
             android:textSize="13sp"
             android:singleLine="true"
             android:textColor="#777777"
-            android:text="Today 00:00 - 33:00"
+            android:text="Today 17:00 - 22:00"
             android:layout_alignBottom="@+id/happy_row_price_image"
             android:layout_toRightOf="@+id/happy_row_price_image"/>
 

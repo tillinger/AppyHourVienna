@@ -49,8 +49,8 @@ public class HappyListAdapter extends ArrayAdapter<HappyHour> {
             address.setText(happyhours.get(position).getAddress().getAddress() + ", " + happyhours.get(position).getAddress().getPostcode());
         }
 
-        time.setText("11:11 - 44:44");
-        price.setText(happyhours.get(position).getPrice() + " €");
+        time.setText(happyhours.get(position).getTimeString());
+        price.setText(happyhours.get(position).getPrice() + "0 €");
 
         return rowView;
     }

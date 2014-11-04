@@ -2,6 +2,8 @@ package is.ru.happyhour;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -22,12 +24,11 @@ public class MainActivity extends Activity implements HappyListFragment.OnHappyH
 
         getActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#99666666")));
 
-        //only add fragment if first created and the screen size is large
+        //only add empty fragment if first created and the screen size is large
         if(savedInstanceState == null && displaySizeLargeOrXLarge()) {
-            DetailFragment detailFragment = new DetailFragment();
-            detailFragment.setArguments(getIntent().getExtras());
+            DetailEmptyFragment detailEmptyFragment = new DetailEmptyFragment();
             getFragmentManager().beginTransaction()
-                    .add(R.id.detail_fragment_large, detailFragment)
+                    .add(R.id.detail_fragment_large, detailEmptyFragment)
                     .commit();
         }
     }
@@ -49,6 +50,16 @@ public class MainActivity extends Activity implements HappyListFragment.OnHappyH
 
         if (fragment instanceof DetailFragment) {
             ((DetailFragment) fragment).updateHappyHour(clickedHappyHour);
+        } else if (fragment instanceof DetailEmptyFragment) {
+            DetailFragment detailFragment = new DetailFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(MainActivity.HAPPYHOUR_EXTRA, clickedHappyHour);
+            detailFragment.setArguments(args);
+
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.detail_fragment_large, detailFragment);
+            fragmentTransaction.commit();
         } else if (fragment instanceof MyMapFragment) {
             getFragmentManager().popBackStackImmediate(); //pop the last fragment from the
             DetailFragment detailFragment = (DetailFragment) getFragmentManager().findFragmentById(R.id.detail_fragment_large);

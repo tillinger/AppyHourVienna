@@ -137,9 +137,13 @@ public class HappyListFragment extends ListFragment {
                 break;
             case R.id.menu_order_by_price:
                 System.out.println("ORDER BY PRICE pressed");
+                this.setListShown(false);
+                dbTask = new LoadHappiesDB(this);
+                dbTask.execute(2);
                 break;
             case R.id.menu_order_by_location:
                 System.out.println("ORDER BY LOCATION pressed");
+                //location ordering not supported right now!
                 break;
             default:
                 return super.onOptionsItemSelected(item);

@@ -45,13 +45,13 @@ public class LoadHappiesDB extends AsyncTask<Integer, Void, Boolean> {
             for(int i = 0; i < 5; i++) {
                 HappyHour happy = new HappyHour();
                 happy.setName("Loco-Bar " + i);
-                happy.setDaysOfWeek(EnumSet.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY));
+                happy.setDaysOfWeek(EnumSet.of(DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Saturday, DayOfWeek.Sunday));
                 happy.setDescriptionHappy("Beer: 3,5€\nCocktails: 1,5€");
-                happy.setDescriptionBar("This Bar is a very nice location for all kind of people!\nMeet with your friends!\nSee you!");
+                happy.setDescriptionBar("Not only a bar but also an art lounge. L18 provides a strong artist environment with blending of art and architecture. There are trendy lounge music, creative performances and a breathtaking view of the Huangpi River flowing in front of the splendid Pudong skyline.");
                 happy.setStartDate(new Date().getTime());
                 happy.setEndDate(new Date().getTime() + 60 * 60 * 24 * 1000 * 7); //one week
-                happy.setPrice(0.5*i);
-                happy.setEndTime(60*60*17);
+                happy.setPrice(0.5*i + 2);
+                happy.setStartTime(60*60*17);
                 happy.setEndTime(60 * 60 * 22);
                 happy.setType(HappyHourType.BEER);
 
@@ -62,23 +62,48 @@ public class LoadHappiesDB extends AsyncTask<Integer, Void, Boolean> {
 
                 this.dbHappies.add(happy);
             }
-        } else { // load all happy hours!
+        } else if (nowOrAll == 1) { // load all happy hours!
             //simulating loading ALL happy hours from db
             this.dbHappies = new ArrayList<HappyHour>();
             for(int i = 0; i < 10; i++) {
                 HappyHour happy = new HappyHour();
                 happy.setName("Loco-Bar " + i);
-                happy.setDaysOfWeek(EnumSet.of(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY));
+                happy.setDaysOfWeek(EnumSet.of(DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Saturday, DayOfWeek.Sunday));
                 happy.setDescriptionHappy("Beer: 3,5€\nCocktails: 1,5€");
-                happy.setDescriptionBar("This Bar is a very nice location for all kind of people!\nMeet with your friends!\nSee you");
+                happy.setDescriptionBar("Not only a bar but also an art lounge. L18 provides a strong artist environment with blending of art and architecture. There are trendy lounge music, creative performances and a breathtaking view of the Huangpi River flowing in front of the splendid Pudong skyline.");
                 happy.setStartDate(new Date().getTime());
                 happy.setEndDate(new Date().getTime() + 60 * 60 * 24 * 1000 * 7); //one week
-                happy.setPrice(0.5*i);
-                happy.setEndTime(60*60*17);
+                happy.setPrice(0.5*i + 2);
+                happy.setStartTime(60*60*17);
                 happy.setEndTime(60 * 60 * 22);
                 happy.setType(HappyHourType.BEER);
 
-                Address address = new Address("Regengasse " + i, 1010);
+                Address address = new Address("Währinger Gürtel Stadtbahnbogen 172-174 ", 1090);
+                address.setLatitude(48.231262);
+                address.setLongitude(16.351871);
+                happy.setAddress(address);
+
+                this.dbHappies.add(happy);
+            }
+        } else if (nowOrAll == 2) { // load all happy hours!
+            //simulating loading ALL happy hours from db
+            this.dbHappies = new ArrayList<HappyHour>();
+            for(int i = 10; i > 0; i--) {
+                HappyHour happy = new HappyHour();
+                happy.setName("Loco-Bar " + i);
+                happy.setDaysOfWeek(EnumSet.of(DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Saturday, DayOfWeek.Sunday));
+                happy.setDescriptionHappy("Beer: 3,5€\nCocktails: 1,5€");
+                happy.setDescriptionBar("Not only a bar but also an art lounge. L18 provides a strong artist environment with blending of art and architecture. There are trendy lounge music, creative performances and a breathtaking view of the Huangpi River flowing in front of the splendid Pudong skyline.");
+                happy.setStartDate(new Date().getTime());
+                happy.setEndDate(new Date().getTime() + 60 * 60 * 24 * 1000 * 7); //one week
+                happy.setPrice(0.5*i + 2);
+                happy.setStartTime(60*60*17);
+                happy.setEndTime(60 * 60 * 22);
+                happy.setType(HappyHourType.BEER);
+
+                Address address = new Address("Währinger Gürtel Stadtbahnbogen 172-174 ", 1090);
+                address.setLatitude(48.231262);
+                address.setLongitude(16.351871);
                 happy.setAddress(address);
 
                 this.dbHappies.add(happy);
