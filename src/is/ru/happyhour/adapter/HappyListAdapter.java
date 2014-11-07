@@ -1,9 +1,6 @@
 package is.ru.happyhour.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +10,6 @@ import android.widget.TextView;
 import is.ru.happyhour.R;
 import is.ru.happyhour.model.HappyHour;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class HappyListAdapter extends ArrayAdapter<HappyHour> {
@@ -42,8 +38,8 @@ public class HappyListAdapter extends ArrayAdapter<HappyHour> {
         TextView price = (TextView) rowView.findViewById(R.id.happy_row_price);
 
         //Set TextViews text for the elements in the row_layout
-        if (happyhours.get(position).getName() != null) {
-            title.setText(happyhours.get(position).getName());
+        if (happyhours.get(position).getBarName() != null) {
+            title.setText(happyhours.get(position).getBarName());
         }
         if (happyhours.get(position).getAddress() != null) {
             address.setText(happyhours.get(position).getAddress().getAddress() + ", " + happyhours.get(position).getAddress().getPostcode());

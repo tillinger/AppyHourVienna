@@ -36,7 +36,7 @@
             android:singleLine="true"
             android:textSize="19sp"
             android:text="Irgendeine Pude"
-            android:textColor="#4AC948"
+            android:textColor="#55AE3A"
             android:textStyle="bold"/>
 
     <!-- Happy hour address -->
@@ -85,7 +85,7 @@
             android:layout_marginTop="1sp"
             android:layout_marginRight="5dip"
             android:singleLine="true"
-            android:textColor="#4AC948"
+            android:textColor="#55AE3A"
             android:text="100 €"
             android:textStyle="bold"
             android:layout_alignParentRight="true"/>

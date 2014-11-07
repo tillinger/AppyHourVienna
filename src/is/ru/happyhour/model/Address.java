@@ -9,6 +9,8 @@ public class Address implements Serializable {
     private double latitude;
     private double longitude;
 
+    public Address() {}
+
     public Address(String address, int postcode) {
         this.address = address;
         this.postcode = postcode;

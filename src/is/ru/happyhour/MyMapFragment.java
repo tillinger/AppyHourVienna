@@ -1,16 +1,11 @@
 package is.ru.happyhour;
 
-import android.app.Fragment;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.*;
 import is.ru.happyhour.model.HappyHour;
 
@@ -31,7 +26,7 @@ public class MyMapFragment extends com.google.android.gms.maps.MapFragment {
         super.onStart();
 
         Bundle args = getArguments();
-        if (args != null) { //TODO change extra name
+        if (args != null) {
             this.happyHour = ((HappyHour) args.getSerializable(MainActivity.HAPPYHOUR_EXTRA));
         }
 
@@ -41,7 +36,7 @@ public class MyMapFragment extends com.google.android.gms.maps.MapFragment {
         // create marker and add to the map
         MarkerOptions marker = new MarkerOptions()
                 .position(new LatLng(happyHour.getAddress().getLatitude(), happyHour.getAddress().getLongitude()))
-                .title(happyHour.getName())
+                .title(happyHour.getBarName())
                 .snippet("Next Happy Hour: TODAY!");
         marker.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         getMap().addMarker(marker).showInfoWindow();

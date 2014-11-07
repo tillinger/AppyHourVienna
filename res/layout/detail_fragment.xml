@@ -97,7 +97,7 @@
                         android:layout_marginLeft="5dip"
                         android:textSize="14sp"
                         android:singleLine="true"
-                        android:text="Today 17:00 - 22:00"
+                        android:text="Monday - Friday"
                         android:layout_toRightOf="@+id/detail_clock_image"
                         android:layout_alignBottom="@+id/detail_clock_image"/>
 

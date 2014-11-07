@@ -65,7 +65,7 @@ public class DetailFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_share:
                 String message = "Hey guy!\nI'm going to the Happy-Hour-Event at "
-                        + happyHour.getName() + "! The address is "
+                        + happyHour.getBarName() + "! The address is "
                         + happyHour.getAddress().getAddress() + ".";
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
@@ -117,16 +117,21 @@ public class DetailFragment extends Fragment {
         TextView description = (TextView) view.findViewById(R.id.detail_description_text);
 
         try { //TODO download lazily from server
-            image.setImageDrawable(Drawable.createFromStream(getActivity().getAssets().open("2.jpg"), null));
-            image.setScaleType(ImageView.ScaleType.CENTER_CROP );
+            if(happyHour.getBarName().startsWith("Loco")) { //only testing purpose
+                image.setImageDrawable(Drawable.createFromStream(getActivity().getAssets().open("2.jpg"), null));
+                image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            } else {
+                image.setImageDrawable(Drawable.createFromStream(getActivity().getAssets().open("stephans.jpg"), null));
+                image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if(happyHour.getName() != null) {
-            title.setText(happyHour.getName());
+        if(happyHour.getBarName() != null) {
+            title.setText(happyHour.getBarName());
         }
-        if(happyHour.getAddress().getAddress() != null) {
+        if(happyHour.getAddress() != null) {
             address.setText(happyHour.getAddress().getAddressWithPostCode());
         }
         if(happyHour.getDaysOfWeek() != null) {
