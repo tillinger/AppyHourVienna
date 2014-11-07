@@ -1,5 +1,8 @@
 package is.ru.happyhour.db;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 /**
  * Created by Peter on 06.11.2014.
  */
@@ -32,9 +35,7 @@ public class HappyHourTable {
             COLUMN_STARTDATE, COLUMN_ENDDATE, COLUMN_STARTTIME, COLUMN_ENDTIME, COLUMN_DAYS, COLUMN_PRICE,
             COLUMN_DESCR_HAPPY, COLUMN_DESCR_BAR};
 
-
-
-    public static final String HAPPYHOUR_CREATE = "create table "
+    private static final String HAPPYHOUR_CREATE = "create table "
             + TABLE_HAPPYHOURS + "(" + COLUMN_ID + " integer primary key, "
             + COLUMN_TYPE + " text not null, "
             + COLUMN_BARNAME + " text not null, "
@@ -53,4 +54,18 @@ public class HappyHourTable {
 
             + COLUMN_DESCR_HAPPY + " text, "
             + COLUMN_DESCR_BAR + " text);";
+
+    public static void onCreate(SQLiteDatabase db) {
+        db.execSQL(HAPPYHOUR_CREATE);
+    }
+
+    public static void onUpgrade(SQLiteDatabase db, int oldVersion,
+                                 int newVersion) {
+        Log.w(HappyHourTable.class.getName(), "Upgrading database from version "
+                + oldVersion + " to " + newVersion
+                + ", which will destroy all old data");
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HAPPYHOURS);
+        onCreate(db);
+    }
 }

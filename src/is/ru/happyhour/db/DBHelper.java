@@ -15,17 +15,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase database) {
-        database.execSQL(HappyHourTable.HAPPYHOUR_CREATE);
+    public void onCreate(SQLiteDatabase db) {
+        HappyHourTable.onCreate(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(DBHelper.class.getName(),
-                "Upgrading database from version " + oldVersion + " to "
-                        + newVersion + ", which will destroy all old data");
-        db.execSQL("DROP TABLE IF EXISTS " + HappyHourTable.TABLE_HAPPYHOURS);
-        onCreate(db);
+        HappyHourTable.onUpgrade(db, oldVersion, newVersion);
     }
 
 } 
