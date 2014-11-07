@@ -1,5 +1,5 @@
 package is.ru.happyhour.model;
 
 public enum DayOfWeek {
-    Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+    Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
 }

@@ -1,6 +1,7 @@
 package is.ru.happyhour.db;
 
         import java.util.ArrayList;
+        import java.util.Calendar;
         import java.util.EnumSet;
         import java.util.List;
 
@@ -9,6 +10,7 @@ package is.ru.happyhour.db;
         import android.database.Cursor;
         import android.database.SQLException;
         import android.database.sqlite.SQLiteDatabase;
+        import is.ru.happyhour.HappyListFragment;
         import is.ru.happyhour.model.Address;
         import is.ru.happyhour.model.DayOfWeek;
         import is.ru.happyhour.model.HappyHour;
@@ -17,7 +19,7 @@ package is.ru.happyhour.db;
 public class HappyDataSource {
 
     // Database fields
-    private SQLiteDatabase database;
+    private SQLiteDatabase db;
     private DBHelper dbHelper;
 
     public HappyDataSource(Context context) {
@@ -25,7 +27,7 @@ public class HappyDataSource {
     }
 
     public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
+        db = dbHelper.getWritableDatabase();
     }
 
     public void close() {
@@ -53,9 +55,18 @@ public class HappyDataSource {
         values.put(HappyHourTable.COLUMN_DESCR_HAPPY, happyHour.getDescriptionHappy());
         values.put(HappyHourTable.COLUMN_DESCR_BAR, happyHour.getDescriptionBar());
 
-        database.insert(HappyHourTable.TABLE_HAPPYHOURS, null, values);
+        String alreadyInserted = "SELECT " + HappyHourTable.COLUMN_ID + " FROM " +
+                HappyHourTable.TABLE_HAPPYHOURS + " WHERE " + HappyHourTable.COLUMN_ID + "=?";
+        Cursor c = db.rawQuery(alreadyInserted, new String[]{happyHour.getId() + ""});
+        long value;
+        if (c.moveToFirst()) {
+            db.update(HappyHourTable.TABLE_HAPPYHOURS, values, HappyHourTable.COLUMN_ID + "='" + happyHour.getId() + "'", null);
+            System.out.println("updated: " + happyHour.getId());
+        } else {
+            db.insert(HappyHourTable.TABLE_HAPPYHOURS, null, values);
+            System.out.println("inserted: " + happyHour.getId());
+        }
 
-        System.out.println("inserted: " + happyHour.getId());
     }
 
     private String calcDaysString(EnumSet<DayOfWeek> days) {
@@ -79,12 +90,32 @@ public class HappyDataSource {
         this.close();
     }
 
-    public ArrayList<HappyHour> getAllHappies() {
+    public ArrayList<HappyHour> getHappiesFilter(int nowOrAll, int orderBy) {
         this.open();
         ArrayList<HappyHour> happies = new ArrayList<HappyHour>();
 
-        Cursor cursor = database.query(HappyHourTable.TABLE_HAPPYHOURS,
-                HappyHourTable.allHappyHourColumns, null, null, null, null, null);
+        //noworall filter
+        String whereString = "";
+        if(nowOrAll == HappyListFragment.POSITION_NOW) {
+            long secondsOfDay = getSecondsOfDay();
+            whereString = HappyHourTable.COLUMN_STARTTIME + " < " + secondsOfDay + " AND " +
+                    HappyHourTable.COLUMN_ENDTIME + " > " + secondsOfDay;
+
+            Calendar calendar = Calendar.getInstance(); //get the character of the current day and check if it is '1'
+            whereString += " AND substr(" + HappyHourTable.COLUMN_DAYS + "," +
+                    (calendar.get(Calendar.DAY_OF_WEEK)) + ",1) LIKE '1'" ;
+        }
+
+        //ordering filter
+        String orderString = "";
+        if(orderBy == HappyListFragment.ORDERBYPRICE) {
+            orderString = HappyHourTable.COLUMN_PRICE + " ASC";
+        } else if (orderBy == HappyListFragment.ORDERBYPRICE) {
+
+        }
+
+        Cursor cursor = db.query(HappyHourTable.TABLE_HAPPYHOURS,
+                HappyHourTable.allHappyHourColumns, whereString, null, null, null, orderString);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -98,6 +129,16 @@ public class HappyDataSource {
         this.close();
 
         return happies;
+    }
+
+    private long getSecondsOfDay() {
+        Calendar c = Calendar.getInstance();
+        long now = c.getTimeInMillis();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return  (now - c.getTimeInMillis()) / 1000;
     }
 
     private HappyHour cursorToHappyHour(Cursor cursor) {

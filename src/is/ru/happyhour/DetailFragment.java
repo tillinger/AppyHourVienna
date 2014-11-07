@@ -120,6 +120,9 @@ public class DetailFragment extends Fragment {
             if(happyHour.getBarName().startsWith("Loco")) { //only testing purpose
                 image.setImageDrawable(Drawable.createFromStream(getActivity().getAssets().open("2.jpg"), null));
                 image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            } else if (happyHour.getBarName().startsWith("Prater")){
+                image.setImageDrawable(Drawable.createFromStream(getActivity().getAssets().open("praterdome.jpg"), null));
+                image.setScaleType(ImageView.ScaleType.CENTER_CROP);
             } else {
                 image.setImageDrawable(Drawable.createFromStream(getActivity().getAssets().open("stephans.jpg"), null));
                 image.setScaleType(ImageView.ScaleType.CENTER_CROP);

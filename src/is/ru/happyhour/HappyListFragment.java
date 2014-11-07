@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +36,17 @@ public class HappyListFragment extends ListFragment {
     private LoadHappiesHttp downloadTask;
     private LoadHappiesDB dbTask;
 
-    private int nowOrAll;
+    private SharedPreferences prefs;
+
+    public static final int POSITION_NOW = 0;
+    public static final int POSITION_ALL = 1;
+
+    public static final int ORDERBYNOTHING = 0;
+    public static final int ORDERBYPRICE = 1;
+    public static final int ORDERBYLOCATION = 2;
+    private int orderBy = 0;
+
+    private static final String LAST_ACTUALIZATION = "LAST_ACTUALIZATION";
 
     public interface OnHappyHourClickListener {
         public void onHappyHourClicked(HappyHour clickedHappyHour);
@@ -50,27 +61,22 @@ public class HappyListFragment extends ListFragment {
 
         final HappyListFragment thisFrag = this;
         this.navigationListener = new ActionBar.OnNavigationListener() {
-            // Get the same strings provided for the drop-down's ArrayAdapter
-            String[] strings = getResources().getStringArray(R.array.action_list);
-
 
             @Override
             public boolean onNavigationItemSelected(int position, long itemId) {
-                nowOrAll = position;
+                System.out.println("spinner position is: " + position);
+                //position = 0 = NOW is called by starting this fragment
 
-                if(strings[position].equals(strings[0])) { //now
-                    System.out.println("NOW pressed");
-
-                    //load the current happy hours from the db -> asynchron!
+                //check if the app shall actualize happyhours (when not actualized for 7 days!)
+                if (prefs.getLong(LAST_ACTUALIZATION, (long) 0) + (1000 * 60 * 60 * 24 * 7) < System.currentTimeMillis()) {
+                    actualizeList();
+                } else {
+                    //load the current happy hours from the db with filter -> asynchron
+                    setListShown(false);
                     dbTask = new LoadHappiesDB(thisFrag);
-                    dbTask.execute(0); // 0 for NOW
-                } else if(strings[position].equals(strings[1])) { //all
-                    System.out.println("ALL pressed");
-
-                    //load the current happy hours from the db -> asynchron!
-                    dbTask = new LoadHappiesDB(thisFrag);
-                    dbTask.execute(1); // 1 for ALL
+                    dbTask.execute(position, orderBy);
                 }
+
                 return true;
             }
         };
@@ -87,6 +93,9 @@ public class HappyListFragment extends ListFragment {
         this.listAdapter = new HappyListAdapter(getActivity(), new ArrayList<HappyHour>());
         this.setListAdapter(listAdapter);
         this.setListShown(false);
+
+        this.prefs = getActivity().getSharedPreferences(
+                getActivity().getApplicationContext().getPackageName(), getActivity().MODE_PRIVATE);
     }
 
     @Override
@@ -131,31 +140,48 @@ public class HappyListFragment extends ListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
-                this.setListShown(false);
-                downloadTask = new LoadHappiesHttp(this);
-                downloadTask.execute();
+                actualizeList();
                 break;
+
             case R.id.menu_order_by_price:
-                System.out.println("ORDER BY PRICE pressed");
+                setOrdering(ORDERBYPRICE);
                 this.setListShown(false);
                 dbTask = new LoadHappiesDB(this);
-                dbTask.execute(2);
+                dbTask.execute(getActivity().getActionBar().getSelectedNavigationIndex(), orderBy);
                 break;
+
             case R.id.menu_order_by_location:
-                System.out.println("ORDER BY LOCATION pressed");
-                //location ordering not supported right now!
+                this.setOrdering(ORDERBYLOCATION);
+                Toast.makeText(getActivity(), "Ordering by location is not supported right now!", Toast.LENGTH_SHORT).show();
                 break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
     }
 
+    private void actualizeList() {
+        prefs.edit().putLong(LAST_ACTUALIZATION, System.currentTimeMillis()).commit();
+
+        this.setListShown(false);
+        downloadTask = new LoadHappiesHttp(this);
+        downloadTask.execute();
+    }
+
+    private void setOrdering(int newOrdering) {
+        if(orderBy == newOrdering) {
+            orderBy = ORDERBYNOTHING;
+        } else {
+            orderBy = newOrdering;
+        }
+    }
+
     public void downloadFinished(boolean success) {
         if(success) {
             //now load the happy hours from the db
             dbTask = new LoadHappiesDB(this);
-            dbTask.execute(nowOrAll);
+            dbTask.execute(getActivity().getActionBar().getSelectedNavigationIndex(), orderBy);
         } else {
             Toast.makeText(getActivity(), "Error downloading Happy Hours!", Toast.LENGTH_LONG).show();
         }

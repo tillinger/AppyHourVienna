@@ -34,12 +34,16 @@ public class LoadHappiesDB extends AsyncTask<Integer, Void, Boolean> {
     }
 
     protected Boolean doInBackground(Integer... args) {
-        System.out.println("loading happy hours from database: " + args[0]);
+        System.out.println("loading happy hours from database noworall: " + args[0] + ", orderby: " + args[1]);
 
         int nowOrAll = args[0];
+        int orderBy = args[1];
 
         HappyDataSource dataSource = new HappyDataSource(frag.getActivity());
-        dbHappies = dataSource.getAllHappies();
+        dbHappies = dataSource.getHappiesFilter(nowOrAll, orderBy);
+
+
+
         return true;
     }
 }
